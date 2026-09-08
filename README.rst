@@ -517,3 +517,15 @@ you may want to follow `the Development instructions <CONTRIBUTING.rst#developme
 .. TODO feedback section - why user feedback is important/valuable, how to file issues/contact authors
 
 .. TODO FAQ/trivia section - "HDR" naming (HDR.out, HDR.json) is for Hot Dry Rock
+
+
+Parent Commit:
+
+106388f0f12cf2128d59e32830a95fd1a90b3dfd
+
+
+
+My most recent commit: 
+755e551166d0dce41d0875289d03a3a159696615
+
+
