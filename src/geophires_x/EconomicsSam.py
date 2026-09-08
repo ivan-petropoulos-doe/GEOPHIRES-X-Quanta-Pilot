@@ -119,6 +119,15 @@ def validate_read_parameters(model: Model) -> None:
         model,
     )
 
+    if econ.term_loan_tenor.value > model.surfaceplant.plant_lifetime.value:
+        raise ValueError(
+            f'{econ.term_loan_tenor.Name} ({econ.term_loan_tenor.value} years) cannot exceed '
+            f'{model.surfaceplant.plant_lifetime.Name} '
+            f'({model.surfaceplant.plant_lifetime.value} years).'
+        )
+
+
+    
     construction_years = model.surfaceplant.construction_years.value
     if abs(econ.bond_financing_start_year.value) >= construction_years:
         model.logger.debug(
@@ -724,8 +733,12 @@ def _get_single_owner_parameters(model: Model) -> dict[str, Any]:
     ret['real_discount_rate'] = _pct(econ.discountrate)
 
     # Project lifetime
-    ret['term_tenor'] = model.surfaceplant.plant_lifetime.value
+    ret['term_tenor'] = econ.term_loan_tenor.value
     ret['term_int_rate'] = _pct(econ.BIR)
+
+    # Upfront debt financing/issuance cost.
+    # SAM expects this value in percent, e.g. 5.0 for a 5% fee.
+    ret['cost_debt_fee'] = _pct(econ.debt_financing_fee)
 
     ret['ibi_oth_amount'] = (econ.OtherIncentives.quantity() + econ.TotalGrant.quantity()).to('USD').magnitude
 
