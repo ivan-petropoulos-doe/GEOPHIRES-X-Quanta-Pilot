@@ -1179,6 +1179,32 @@ class Economics:
             ToolTipText='Inflated bond interest rate during construction (for debt/loans)'
         )
 
+
+        self.term_loan_tenor = self.ParameterDict[self.term_loan_tenor.Name] = intParameter(
+            "Term Loan Tenor",
+            DefaultValue=20,
+            AllowableRange=list(range(1, 101, 1)),
+            UnitType=Units.TIME,
+            PreferredUnits=TimeUnit.YEAR,
+            CurrentUnits=TimeUnit.YEAR,
+            ErrMessage="assume default term loan tenor (20 years)",
+            ToolTipText="Amortization tenor of operating-period debt for SAM Single Owner PPA economics."
+        )
+
+        self.debt_financing_fee = self.ParameterDict[self.debt_financing_fee.Name] = floatParameter(
+            "Debt Financing Fee",
+            DefaultValue=0.0,
+            Min=0.0,
+            Max=1.0,
+            UnitType=Units.PERCENT,
+            PreferredUnits=PercentUnit.TENTH,
+            CurrentUnits=PercentUnit.TENTH,
+            ErrMessage="assume default debt financing fee (0)",
+            ToolTipText="Upfront debt issuance/financing cost modeled as a percentage of total debt amount "
+                        "for SAM Single Owner PPA economics."
+        )
+
+        
         self.EIR = self.ParameterDict[self.EIR.Name] = floatParameter(
             "Inflated Equity Interest Rate",
             DefaultValue=0.1,
@@ -2834,7 +2860,9 @@ class Economics:
                     self.royalty_supplemental_payments,
                     self.construction_capex_schedule,
                     self.bond_financing_start_year,
-                    self.ritc_state_amount
+                    self.ritc_state_amount,
+                    self.term_loan_tenor,
+                    self.debt_financing_fee
                 ]
                 for sam_em_only_param in sam_em_only_params:
                     if sam_em_only_param.Provided:
